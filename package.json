@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "puppeteer": "^22.6.5"
+  },
+  "name": "polititian-stock-trading-scrapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "type": "module",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "Luis Hernández Martín",
+  "license": "ISC",
+  "description": ""
+}
+
+
