@@ -1,23 +1,23 @@
 import { url, year, selectors } from "./config.js";
-import { setupBrowser, closeBrowser } from "./src/utils.js";
-import { goToPage } from "./src/navigation.js";
-import { performSearch } from "./src/actions.js";
-import { extractData } from "./src/dataExtraction.js";
+import { setupBrowser, closeBrowser } from "./utils.js";
+import { goToPage } from "./navigation.js";
+import { performSearch } from "./actions.js";
+import { extractData } from "./dataExtraction.js";
 
-async function run() {
+
+export default async function runScraper() {
   const { page, browser } = await setupBrowser();
   try {
     await goToPage(page, url);
     await performSearch(page, selectors, year);
     const data = await extractData(page, selectors);
+    return data;
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
     if (browser) {
-      await browser.close();
+      closeBrowser(browser);
       console.log("Browser closed.");
     }
   }
 }
-
-run();

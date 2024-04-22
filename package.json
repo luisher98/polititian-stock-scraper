@@ -4,11 +4,11 @@
   },
   "name": "polititian-stock-trading-scrapper",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "devDependencies": {},
   "type": "module",
   "scripts": {
-    "start": "node index"
+    "start": "node main"
   },
   "author": "Luis Hernández Martín",
   "license": "ISC",
