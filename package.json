@@ -1,18 +1,17 @@
 {
   "dependencies": {
+    "pdf2json": "^3.0.5",
     "puppeteer": "^22.6.5"
   },
   "name": "polititian-stock-trading-scrapper",
   "version": "1.0.0",
   "main": "main.js",
-  "devDependencies": {},
   "type": "module",
   "scripts": {
-    "start": "node main"
+    "start": "node main",
+    "pdf": "node ./src/pdf/pdf.js"
   },
   "author": "Luis Hernández Martín",
   "license": "ISC",
   "description": ""
 }
-
-

@@ -5,7 +5,7 @@ import { performSearch } from "./actions.js";
 import { extractData } from "./dataExtraction.js";
 
 
-export default async function runScraper() {
+export default async function runScrapper() {
   const { page, browser } = await setupBrowser();
   try {
     await goToPage(page, url);
