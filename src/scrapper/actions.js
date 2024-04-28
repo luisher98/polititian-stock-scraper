@@ -1,16 +1,13 @@
 export async function performSearch(page, selectors, year) {
+    // Select search sidebar button and click it
     await page.waitForSelector(selectors.searchSidebarButton, { visible: true });
-    console.log("Search sidebar button is visible.");
     await page.click(selectors.searchSidebarButton);
-    console.log("Navigation after clicking search sidebar button complete.");
 
+    // Select "#Year" dropdown and set it to the given year
     await page.waitForSelector(selectors.dropdownSelector, { visible: true });
-    console.log("Dropdown selector is visible.");
     await page.select(selectors.dropdownSelector, year);
-    console.log(`Year set to ${year}.`);
 
+    // Select "#Search" button and click it
     await page.waitForSelector(selectors.searchButtonSelector, { visible: true });
-    console.log("Search button is visible.");
     await page.click(selectors.searchButtonSelector);
-    console.log("Search button click complete.");
 }

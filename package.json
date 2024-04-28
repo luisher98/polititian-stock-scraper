@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "openai": "^4.38.5",
     "pdf2json": "^3.0.5",
     "puppeteer": "^22.6.5"
   },
@@ -9,7 +12,7 @@
   "type": "module",
   "scripts": {
     "start": "node main",
-    "pdf": "node ./src/pdf/pdf.js"
+    "pdf": "node ./src/pdf/downloadPDF.js"
   },
   "author": "Luis Hernández Martín",
   "license": "ISC",

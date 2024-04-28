@@ -1,31 +1,15 @@
-// download pdf from link
+import { downloadPDF, deletePDF } from "./utils.js";
+import convertPDFToJSON from "./openai.js";
 
-// upload pdf to openAI and request with the following prompt:
+export default async function processPDFTransactionData(url) {
+  // Download the PDF from the given URL, returning the path to the file
+  const path = await downloadPDF(url);
 
-/*
-  Only respond with JSON no words. Read this pdf generate a json file with the information. Follow strictly this structure: 
-  {
-  "Filing_Information": {
-    "Name": "Hon. Richard W. Allen",
-    "Status": "Member",
-    "State_District": "GA12",
-    "Filing_ID": "#20024277"
-  },
-  "Transactions": [
-    {
-      "ID_Owner": "SP",
-      "Asset": "Albemarle Corporation (ALB) [ST]",
-      "Transaction_Type": "S",
-      "Date": "12/21/2023",
-      "Notification_Date": "01/08/2024",
-      "Amount": "$1,001 - $15,000",
-      "Filing_Status": "New",
-      "Signatory_Owner": "R.W. Allen & Associates, Inc."
-    },
-]
+  // Upload the PDF to OpenAI and store the JSON in data
+  const data = await convertPDFToJSON(path);
+
+  // Delete the PDF
+  await deletePDF(path);
+
+  return data;
 }
-*/
-
-// store this information
-
-// delete pdf
