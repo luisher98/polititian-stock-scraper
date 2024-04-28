@@ -50,11 +50,11 @@ export default async function convertPDFToJSON(filePath) {
     await openai.files.del(file.id);
 
     // Get the JSON data from the messages
-    const data = JSON.parse(messages.data[0].content[0].text.value);
+    const data = messages.data[0].content[0].text.value;
 
-    console.log("Transaction: ", data);
+    console.log("Data from OpenAI: ", data)
 
-    return data;
+    return JSON.parse(data);
   } catch (error) {
     console.error(
       "Error processing the PDF to JSON with OpenAI: ",

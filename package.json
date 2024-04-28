@@ -11,8 +11,7 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node main",
-    "pdf": "node ./src/pdf/downloadPDF.js"
+    "start": "node main"
   },
   "author": "Luis Hernández Martín",
   "license": "ISC",

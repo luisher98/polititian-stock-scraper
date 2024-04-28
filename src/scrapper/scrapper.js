@@ -4,9 +4,9 @@ import { goToPage } from "./navigation.js";
 import { performSearch } from "./actions.js";
 import { extractData } from "./dataExtraction.js";
 
-
-async function runScrapper() {
+export default async function runScrapper() {
   const { page, browser } = await setupBrowser();
+  console.log("Checking website for new data...");
   try {
     await goToPage(page, url);
     await performSearch(page, selectors, year);
@@ -17,7 +17,6 @@ async function runScrapper() {
   } finally {
     if (browser) {
       closeBrowser(browser);
-      console.log("Browser closed.");
     }
   }
 }

@@ -32,8 +32,6 @@ export async function downloadPDF(url) {
   } catch (err) {
     deletePDF(outputPath);
     throw err; // Re-throw the error to be caught by the outer try-catch
-  } finally {
-    console.log("PDF download complete");
   }
 }
 

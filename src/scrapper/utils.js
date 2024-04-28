@@ -8,5 +8,4 @@ export async function setupBrowser() {
 
 export async function closeBrowser(browser) {
   await browser.close();
-  console.log("Browser closed.");
 }
