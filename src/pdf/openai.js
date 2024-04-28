@@ -46,13 +46,11 @@ export default async function convertPDFToJSON(filePath) {
     // Get the messages from the thread
     let messages = await openai.beta.threads.messages.list(thread.id);
 
-    // Delete the file from OpenAI
-    await openai.files.del(file.id);
-
     // Get the JSON data from the messages
-    const data = messages.data[0].content[0].text.value;
+    const data = await messages.data[0].content[0].text.value;
 
-    console.log("Data from OpenAI: ", data)
+    // Delete the file from OpenAI. this should be done asynchronously to save time
+    await openai.files.del(file.id);
 
     return JSON.parse(data);
   } catch (error) {
