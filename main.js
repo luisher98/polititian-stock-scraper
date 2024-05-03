@@ -31,5 +31,5 @@ app.get("/polititians-transaction-data-sse", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on ${SERVER_NAME}:${PORT}`);
+  console.log(`Server running on ${SERVER_NAME}:${PORT}.\nSSE endpoint: ${SERVER_NAME}:${PORT}/polititians-transaction-data-sse`);
 });

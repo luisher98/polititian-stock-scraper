@@ -18,11 +18,14 @@ export default async function checkAndUpdateLatestTransactionData(
   });
 
   // if no server data, retrieve data from scrapper
-  const newUrlData = await runScrapper();
+  const {newUrlData, nameDisplayedInTransactionSite, office} = await runScrapper();
+
+  console.log(name)
 
   if (newUrlData !== oldUrlData) {
     // proceed to extract data from pdf
     const latestTransactionData = await processPDFTransactionData(newUrlData);
+    if (latestTransactionData.Filing_Information.Name !== nameDisplayedInTransactionSite)
 
     console.log("transaction data: ", latestTransactionData);
 

@@ -9,3 +9,5 @@ export async function setupBrowser() {
 export async function closeBrowser(browser) {
   await browser.close();
 }
+
+
