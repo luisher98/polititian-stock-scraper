@@ -58,5 +58,6 @@ export default async function convertPDFToJSON(filePath) {
       "Error processing the PDF to JSON with OpenAI: ",
       error.message
     );
+    return null;
   }
 }

@@ -9,7 +9,7 @@ export async function scrapPDFUrl(page, selectors) {
     }, selectors.urlDataTableSelector);
     return pdfUrl;
   } catch (error) {
-    console.error("An error occurred while scrapping for the PDF url:", error);
+    console.error("An error occurred while scrapping for the PDF url: ", error);
   }
 }
 
@@ -21,14 +21,12 @@ export async function scrapLatestNameAndOffice(page, selectors) {
       const rows = Array.from(
         document.querySelectorAll("#DataTables_Table_0 tbody tr")
       );
-      if (rows.length === 0) return { name: null, office: null };
 
       const fullName = rows[0].querySelector(nameSel).innerText;
       const office = rows[0].querySelector(officeSel).innerText;
 
-      const name = fullName.split(",")[-1];
+      const name = fullName.split(",")[0];
 
-      console.log(name);
       return { name, office };
     },
     selectors.nameDataTableSelector,

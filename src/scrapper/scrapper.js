@@ -6,7 +6,7 @@ import { scrapPDFUrl, scrapLatestNameAndOffice } from "./dataExtraction.js";
 
 export default async function runScrapper() {
   const { page, browser } = await setupBrowser();
-  console.log("Checking website for new data...");
+  console.log("Running scrapper...");
   try {
     await goToPage(page, url);
     await performSearch(page, selectors, year);

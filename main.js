@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import checkAndUpdateLatestTransactionData from "./src/transactionChecker.js";
+import checkAndUpdateLatestTransactionData from "./src/transaction/transactionChecker.js";
 
 dotenv.config();
 
@@ -18,18 +18,31 @@ app.get("/polititians-transaction-data-sse", (req, res) => {
 
   const transactionUpdate = (e) => {
     res.write(`data: ${JSON.stringify(e)}\n\n`);
+    console.log(e.message);
   };
 
   try {
-    checkAndUpdateLatestTransactionData(transactionUpdate);
-    setInterval(() => {
-      checkAndUpdateLatestTransactionData(transactionUpdate);
-    }, 1000 * 60);
+    async function runCheckAndUpdate() {
+      // update transaction data and recursively schedule the next update
+      async function scheduleNextRun() {
+        await checkAndUpdateLatestTransactionData(transactionUpdate);
+        setTimeout(scheduleNextRun, 1000 * 60); // Schedule the next run in 60 seconds
+      }
+
+      // Run the first update, then start the interval
+      await checkAndUpdateLatestTransactionData(transactionUpdate);
+      setTimeout(scheduleNextRun, 1000 * 60); // Start the loop with a 60-second delay after the initial call
+    }
+
+    // Start the periodic check
+    runCheckAndUpdate();
   } catch (error) {
     console.log(error);
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on ${SERVER_NAME}:${PORT}.\nSSE endpoint: ${SERVER_NAME}:${PORT}/polititians-transaction-data-sse`);
+  console.log(
+    `SSE endpoint: ${SERVER_NAME}:${PORT}/polititians-transaction-data-sse`
+  );
 });
