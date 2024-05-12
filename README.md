@@ -14,6 +14,7 @@ This project is a web scraper designed to extract stock trading data of politici
 
 - Node.js
 - npm
+- Suficient OpenAI credits
 
 ### Installation
 
@@ -36,6 +37,15 @@ SCRAPPER_FREQUENCY_MINUTES = your_scrapper_frequency
 ```sh
 npm run start
 ```
+
+### Creating an assistant and getting its ID
+
+1. Visit this [link](https://platform.openai.com/assistants)
+2. Create a new assistant
+![image](https://github.com/luisher98/polititian-stock-scrapper/assets/29884531/2bd4a5d3-cb70-4773-8334-8ac66d3b17f2)
+3. Make sure the options File Search and Code Interpreter are selected, and that the temperature is set to low
+![image](https://github.com/luisher98/polititian-stock-scrapper/assets/29884531/f310c91c-c915-4083-946c-e1b135918a5f)
+4. The add the assistant ID to OPENAI_ASSISTANT_ID 
 
 ## Usage
 
