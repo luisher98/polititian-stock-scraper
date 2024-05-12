@@ -1,4 +1,5 @@
 import { assistantInstructions } from "./config.js";
+import { extractStringBetweenBackticks, isJSONString } from "./validation.js";
 
 import fs from "fs";
 import dotenv from "dotenv";
@@ -13,51 +14,59 @@ const configuration = {
 const openai = new OpenAI(configuration);
 
 export default async function convertPDFToJSON(filePath) {
+  if (!configuration.apiKey) {
+    throw new Error(
+      "OpenAI API Key not found. Please add it to the .env file."
+    );
+  }
   const instructions = `${assistantInstructions}`;
   const assistant = process.env.OPENAI_ASSISTANT_ID;
-  try {
-    // Upload the PDF file to OpenAI
-    const file = await openai.files.create({
-      file: fs.createReadStream(filePath),
-      purpose: "assistants",
-    });
+  // Upload the PDF file to OpenAI
+  const file = await openai.files.create({
+    file: fs.createReadStream(filePath),
+    purpose: "assistants",
+  });
 
-    // Create a thread with the PDF file
-    const thread = await openai.beta.threads.create({
-      messages: [
-        {
-          role: "user",
-          content: instructions,
-          attachments: [
-            {
-              file_id: file.id,
-              tools: [{ type: "code_interpreter" }],
-            },
-          ],
-        },
-      ],
-    });
+  // Create a thread with the PDF file
+  const thread = await openai.beta.threads.create({
+    messages: [
+      {
+        role: "user",
+        content: instructions,
+        attachments: [
+          {
+            file_id: file.id,
+            tools: [{ type: "code_interpreter" }],
+          },
+        ],
+      },
+    ],
+  });
 
-    // Request the information from the assistant
-    const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
-      assistant_id: assistant,
-    });
+  // Request the information from the assistant
+  await openai.beta.threads.runs.createAndPoll(thread.id, {
+    assistant_id: assistant,
+  });
 
-    // Get the messages from the thread
-    let messages = await openai.beta.threads.messages.list(thread.id);
+  // Get the messages from the thread
+  let messages = await openai.beta.threads.messages.list(thread.id);
 
-    // Get the JSON data from the messages
-    const data = await messages.data[0].content[0].text.value;
+  // Get the JSON data from the messages
+  const data = await messages.data[0].content[0].text.value;
 
-    // Delete the file from OpenAI. this should be done asynchronously to save time
-    await openai.files.del(file.id);
+  // Delete the file from OpenAI. this should be done asynchronously to save time
+  await openai.files.del(file.id);
 
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(
-      "Error processing the PDF to JSON with OpenAI: ",
-      error.message
-    );
-    return null;
+  // Check if the data prompted by openai is in a JSON format
+  if (!isJSONString(data)) {
+    try {
+      // sometimes the data is wrapped in tripple backticks
+      data = extractStringBetweenBackticks(data);
+    } catch (error) {
+      console.error("Error extracting JSON data from OpenAI: ", error);
+    }
   }
+
+  // Return the JSON data
+  return JSON.parse(data);
 }

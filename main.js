@@ -7,10 +7,12 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const SERVER_NAME = process.env.SERVER_NAME || "http://localhost";
+const SCRAPPER_FREQUENCY = process.env.SCRAPPER_FREQUENCY_MINUTES || 60; // in minutes
 
 const app = express();
 app.use(bodyParser.json());
 
+// SSE endpoint
 app.get("/polititians-transaction-data-sse", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
@@ -23,23 +25,22 @@ app.get("/polititians-transaction-data-sse", (req, res) => {
 
   try {
     async function runCheckAndUpdate() {
-      // update transaction data and recursively schedule the next update
       async function scheduleNextRun() {
         await checkAndUpdateLatestTransactionData(transactionUpdate);
-        setTimeout(scheduleNextRun, 1000 * 60); // Schedule the next run in 60 seconds
+        setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
       }
 
-      // Run the first update, then start the interval
       await checkAndUpdateLatestTransactionData(transactionUpdate);
-      setTimeout(scheduleNextRun, 1000 * 60); // Start the loop with a 60-second delay after the initial call
+      setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
     }
 
-    // Start the periodic check
     runCheckAndUpdate();
   } catch (error) {
     console.log(error);
   }
 });
+
+//
 
 app.listen(PORT, () => {
   console.log(

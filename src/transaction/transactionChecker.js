@@ -12,16 +12,9 @@ export default async function checkAndUpdateLatestTransactionData(
     // if not, retrieve data from server
   }
 
-  transactionUpdate({
-    status: "checking",
-    message: "Checking website for new transactions...",
-  });
-
-  const {
-    pdfUrl: newPDFUrl,
-    name: nameDisplayedInTransactionSite,
-    office: officeDisplayedInTransactionSite,
-  } = await runScrapper();
+  const { pdfUrl: newPDFUrl, websiteTransactionData } = await runScrapper(
+    transactionUpdate
+  );
 
   // we can check if the polititian is a member of a commitee
   // const { isMember, commitees } = checkPolititianCommittees(
@@ -34,20 +27,21 @@ export default async function checkAndUpdateLatestTransactionData(
     console.log(`Found new PDF data: ${newPDFUrl}`);
     const latestTransactionData = await processPDFTransactionData(
       newPDFUrl,
-      nameDisplayedInTransactionSite,
-      officeDisplayedInTransactionSite
+      websiteTransactionData
     );
 
-    if (latestTransactionData !== null) {
+    if (latestTransactionData === null) {
       transactionUpdate({
         status: "error",
         message:
-          "Fatal error. after multiple attempts, failed to retrieve correct transaction data.",
+          "Error processing transaction data correctly after multiple attempts.",
       });
-      return null;
+      throw new Error(
+        "After multiple attempts, could not process transaction data."
+      );
+    } else {
+      console.log("SUCCESS");
     }
-
-    console.log("transaction data: ", latestTransactionData);
 
     // Store the information in the database
     // await storeTransactionDataInDatabase(latestTransactionData);
