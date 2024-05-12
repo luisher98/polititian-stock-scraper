@@ -1,9 +1,9 @@
-import { assistantInstructions } from "./config.js";
-import { extractStringBetweenBackticks, isJSONString } from "./validation.js";
-
 import fs from "fs";
 import dotenv from "dotenv";
 import OpenAI from "openai";
+
+import { assistantInstructions } from "./config.js";
+import { extractStringBetweenBackticks, isJSONString } from "./validation.js";
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import checkAndUpdateLatestTransactionData from "./src/transaction/transactionChecker.js";
+import checkAndUpdateLatestTransactionData from "./src/transactionChecker.js";
 
 dotenv.config();
 
@@ -40,7 +40,18 @@ app.get("/polititians-transaction-data-sse", (req, res) => {
   }
 });
 
-//
+// REST endpoint
+app.get("/latest-polititian-transaction-data", async (req, res) => {
+  try {
+    const transactionUpdate = (e) => {
+      res.json(e);
+    };
+
+    await checkAndUpdateLatestTransactionData(transactionUpdate);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.listen(PORT, () => {
   console.log(

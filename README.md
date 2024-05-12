@@ -15,6 +15,7 @@ This project is a web scraper designed to extract stock trading data of politici
 - Node.js
 - npm
 - Suficient OpenAI credits
+- MongoDB 
 
 ### Installation
 
@@ -30,8 +31,16 @@ npm install
 ```env
 OPENAI_API_KEY = your_openai_api_key
 OPENAI_ASSISTANT_ID = your_openai_assistant_id
+
 PORT = your_port
+
 SCRAPPER_FREQUENCY_MINUTES = your_scrapper_frequency
+
+MONGODB_USER = your_mongo_user
+MONGODB_PASSWORD = your_mongo_password
+MONGODB_DATABASE_URI = your_mongo_uri
+MONGODB_DB = your_mongo_db_name
+MONGODB_COLLECTION = your_mongo_db_collection
 ```
 4. Start the server:
 ```sh
