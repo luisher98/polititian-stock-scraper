@@ -51,6 +51,10 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Architecture
+![image](https://github.com/luisher98/polititian-stock-scrapper/assets/29884531/b236c532-d817-4c62-84e6-6efde9c11813)
+
+
 ## Pending implementations
 
 - [ ] Integrate TypeScript
