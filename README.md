@@ -34,7 +34,7 @@ SCRAPPER_FREQUENCY_MINUTES = your_scrapper_frequency
 ```
 4. Start the server:
 ```sh
-npm start
+npm run start
 ```
 
 ## Usage
