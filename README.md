@@ -51,9 +51,17 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Pending implementations
+
+[] Integrate TypeScript
+[] Handle OpenAI Error Codes https://help.openai.com/en/articles/6891839-api-error-codes
+[] Database integration
+[] REST API
+[] Server deployment
+
 ## License
 
-Distributed under the ISC License. See `LICENSE` for more information.
+Distributed under the ISC License.
 
 ## Contact
 
