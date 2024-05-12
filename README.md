@@ -53,11 +53,11 @@ Contributions are what make the open source community such an amazing place to l
 
 ## Pending implementations
 
-[] Integrate TypeScript
-[] Handle OpenAI Error Codes https://help.openai.com/en/articles/6891839-api-error-codes
-[] Database integration
-[] REST API
-[] Server deployment
+- [ ] Integrate TypeScript
+- [ ] [Handle OpenAI Error Codes] (https://help.openai.com/en/articles/6891839-api-error-codes)
+- [ ] Database integration
+- [ ] REST API
+- [ ] Server deployment
 
 ## License
 
