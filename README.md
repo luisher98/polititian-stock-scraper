@@ -67,4 +67,4 @@ Distributed under the ISC License.
 
 Luis Hernández Martín - luisheratm@gmail.com
 
-Project Link: [https://github.com/yourusername/polititian-stock-trading-scrapper](https://github.com/yourusername/polititian-stock-trading-scrapper)
+Project Link: [https://github.com/luisher98/polititian-stock-trading-scrapper](https://github.com/luisher98/polititian-stock-trading-scrapper)
