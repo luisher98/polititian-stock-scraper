@@ -25,42 +25,6 @@ git clone https://github.com/yourusername/polititian-stock-trading-scrapper.git
 ```sh
 npm install
 ```
-3. Deciding which workspace information to collect
-
-Collecting workspace information
-
-Filtering to most relevant information
-
-Sure, here's a professional README for your project:
-
-```markdown
-# Politician Stock Trading Scrapper
-
-This project is a web scraper designed to extract stock trading data of politicians. It uses Puppeteer for web scraping, OpenAI for PDF to JSON conversion, and Express for serving the data.
-
-## Features
-
-- Scrapes stock trading data of politicians from the web.
-- Converts PDF data to JSON using OpenAI.
-- Serves the data using an Express server.
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js
-- npm
-
-### Installation
-
-1. Clone the repository:
-```sh
-git clone https://github.com/yourusername/polititian-stock-trading-scrapper.git
-```
-2. Install NPM packages:
-```sh
-npm install
-```
 3. Create a `.env` file in the root directory and fill in your OpenAI API key, assistant ID, server port, and scrapper frequency:
 ```env
 OPENAI_API_KEY = your_openai_api_key
