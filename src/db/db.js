@@ -33,6 +33,7 @@ export async function getLatestTransactionData() {
     };
     const result = await collection.findOne(query, options);
     console.log(result);
+    return result;
   } catch (error) {
     console.error(error);
   } finally {

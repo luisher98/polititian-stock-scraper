@@ -12,29 +12,42 @@ const SCRAPPER_FREQUENCY = process.env.SCRAPPER_FREQUENCY_MINUTES || 60; // in m
 const app = express();
 app.use(bodyParser.json());
 
+let clients = [];
+
+const transactionUpdate = (event) => {
+  clients.forEach((client) => {
+    client.write(`data: ${JSON.stringify(event)}\n\n`);
+  });
+  console.log(event.message);
+};
+
+(() => {
+  async function runCheckAndUpdate() {
+    async function scheduleNextRun() {
+      await checkAndUpdateLatestTransactionData(transactionUpdate);
+      setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
+    }
+
+    await checkAndUpdateLatestTransactionData(transactionUpdate);
+    setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
+  }
+
+  runCheckAndUpdate();
+})();
+
 // SSE endpoint
 app.get("/polititians-transaction-data-sse", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
-
-  const transactionUpdate = (e) => {
-    res.write(`data: ${JSON.stringify(e)}\n\n`);
-    console.log(e.message);
-  };
-
+  res.flushHeaders();
+  
   try {
-    async function runCheckAndUpdate() {
-      async function scheduleNextRun() {
-        await checkAndUpdateLatestTransactionData(transactionUpdate);
-        setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
-      }
+    clients.push(res);
 
-      await checkAndUpdateLatestTransactionData(transactionUpdate);
-      setTimeout(scheduleNextRun, SCRAPPER_FREQUENCY * 1000 * 60);
-    }
-
-    runCheckAndUpdate();
+    res.on("close", () => {
+      clients = clients.filter((client) => client !== res);
+    });
   } catch (error) {
     console.log(error);
   }

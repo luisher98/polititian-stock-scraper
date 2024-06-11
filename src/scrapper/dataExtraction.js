@@ -1,7 +1,6 @@
 export async function scrapPDFUrl(page, selectors) {
   await page.waitForSelector(selectors.urlDataTableSelector, { visible: true });
   try {
-
     const pdfUrl = await page.evaluate((selector) => {
       const rows = Array.from(document.querySelectorAll(selector));
       const url = rows.slice(0, 1).map((link) => link.href);

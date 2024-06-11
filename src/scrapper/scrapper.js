@@ -1,7 +1,6 @@
 import { url, year, selectors } from "./config.js";
 import { setupBrowser, closeBrowser } from "./utils.js";
-import { goToPage } from "./navigation.js";
-import { performSearch } from "./actions.js";
+import { goToPage, performSearch } from "./navigation.js";
 import { scrapPDFUrl, scrapLatestNameAndOffice } from "./dataExtraction.js";
 
 export default async function runScrapper(transactionUpdate = () => {}) {

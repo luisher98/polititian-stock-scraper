@@ -16,6 +16,5 @@
     "db": "node ./src/db/db.js"
   },
   "author": "Luis Hernández Martín",
-  "license": "ISC",
-  "description": ""
+  "license": "ISC"
 }
