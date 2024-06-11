@@ -45,21 +45,19 @@ export default async function checkAndUpdateLatestTransactionData(
         "After multiple attempts, could not process transaction data."
       );
     } else {
-      console.log("SUCCESS");
+      console.log("The transaction data was correctly processed.");
     }
 
-    const transactionDataAndMetadata = await addExtraMetadataToTransactionData(
-      latestTransactionData,
-      newPDFUrl /*, commitees */
-    );
 
     // Store the information in the database
-    await storeTransactionDataInDatabase(transactionDataAndMetadata);
+    await storeTransactionDataInDatabase(latestTransactionData);
 
     transactionUpdate({
       status: "alert",
       message: "New transaction data found!",
-      transaction: transactionDataAndMetadata,
+      time: new Date().toISOString(),
+      pdfUrl: newPDFUrl,
+      transaction: latestTransactionData,
     });
 
     // update the old data
@@ -67,19 +65,8 @@ export default async function checkAndUpdateLatestTransactionData(
   } else {
     transactionUpdate({
       status: "finished checking",
+      time: new Date().toISOString(),
       message: "new data not found.",
     });
   }
-}
-
-async function addExtraMetadataToTransactionData(
-  transactionData,
-  pdfUrl /*, commitees */
-) {
-  // [NOT IMPLEMENTED] add metadata to the transaction data
-  // transactionData.commitees = commitees;
-  transactionData.pdfUrl = pdfUrl;
-  transactionData.timestamp = new Date().toISOString();
-
-  return transactionData;
 }

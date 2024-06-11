@@ -2,44 +2,59 @@ export async function validateGeneratedOpenAiData(
   data,
   websiteTransactionData
 ) {
-  // get the name and office of the polititian from the website
-  const {
-    nameDisplayedInTransactionWebsite,
-    officeDisplayedInTransactionWebsite,
-  } = websiteTransactionData;
+  try {
+    const websiteData = {
+      name: websiteTransactionData.nameDisplayedInTransactionWebsite,
+      office: websiteTransactionData.officeDisplayedInTransactionWebsite,
+    };
 
-  // get the first name and office of the polititian from the transaction data of pdf
-  const {
-    firstName: filingPolititianFirstName,
-    office: filingPolititianOffice,
-  } = await getTransactionFirstNameAndOffice(data);
+    const { firstName, office } = await getTransactionFirstNameAndOffice(data);
 
-  // compare the data from the  website and the data from the transaction,
-  // if they are different openai made a mistake
-  if (
-    filingPolititianFirstName !== nameDisplayedInTransactionWebsite ||
-    filingPolititianOffice !== officeDisplayedInTransactionWebsite
-  ) {
-    console.error(
-      `There's a discrepancy between the data from the website and the transaction:\n
-         The name from the website is "${nameDisplayedInTransactionWebsite}" and the name from the transaction is "${filingPolititianFirstName}"\n
-         The office from the website is "${officeDisplayedInTransactionWebsite}" and the office from the transaction is "${filingPolititianOffice}"\n
-         Retrying to process PDF data...\n`
+    const transactionData = {
+      firstName,
+      office,
+    };
+
+    if (!isValidPoliticianData(transactionData, websiteData)) {
+      logDiscrepancyError(websiteData, transactionData);
+    }
+
+    if (!hasTransactions(data)) {
+      throw new Error(
+        "no transactions were found in the processed OpenAI data."
+      );
+    }
+
+    console.log("Data validated successfully");
+  } catch (error) {
+    throw new Error(
+      `Data from OpenAI don't match website data because ${error.message}`
     );
-
-    return false;
-
-  } else if (data.Transactions.length === 0) {
-    console.error("No transactions found in the processed openai data.");
-    return false;
-  } else {
-    return true;
   }
+}
+
+function isValidPoliticianData(transactionData, websiteData) {
+  return (
+    transactionData.firstName === websiteData.name &&
+    transactionData.office === websiteData.office
+  );
+}
+
+function logDiscrepancyError(websiteData, transactionData) {
+  throw new Error(
+    `there's a discrepancy between the data from the website and the transaction:
+     The name from the website is "${websiteData.name}" and the name from the transaction is "${transactionData.firstName}"
+     The office from the website is "${websiteData.office}" and the office from the transaction is "${transactionData.office}"`
+  );
+}
+
+function hasTransactions(data) {
+  return data.Transactions && data.Transactions.length > 0;
 }
 
 async function getTransactionFirstNameAndOffice(transactionData) {
   if (!transactionData) {
-    throw new Error("No transaction name and office data found");
+    throw new Error("no transaction name and office data was found.");
   }
   const fullName = transactionData.Filing_Information.Name.split(" ");
   console.log("fullName: ", fullName);

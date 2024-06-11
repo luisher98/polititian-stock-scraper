@@ -19,6 +19,7 @@ export default async function convertPDFToJSON(filePath) {
       "OpenAI API Key not found. Please add it to the .env file."
     );
   }
+
   const instructions = `${assistantInstructions}`;
   const assistant = process.env.OPENAI_ASSISTANT_ID;
   // Upload the PDF file to OpenAI
@@ -50,15 +51,18 @@ export default async function convertPDFToJSON(filePath) {
 
   // Get the messages from the thread
   let messages = await openai.beta.threads.messages.list(thread.id);
+  
+  // fs.writeFileSync("messages.json", JSON.stringify(messages));
 
   // Get the JSON data from the messages
-  const data = await messages.data[0].content[0].text.value;
+  let data = await messages.data[0].content[0].text.value;
+
 
   // Delete the file from OpenAI. this should be done asynchronously to save time
   await openai.files.del(file.id);
 
   // Check if the data prompted by openai is in a JSON format
-  if (!isJSONString(data)) {
+  if (!(data)) {
     try {
       // sometimes the data is wrapped in tripple backticks
       data = extractStringBetweenBackticks(data);

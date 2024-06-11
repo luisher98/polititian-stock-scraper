@@ -19,16 +19,12 @@ export default async function processPDFTransactionData(
     let data = await convertPDFToJSON(path);
 
     // validate that the data from OpenAI is correct by comparing it to the website data
-    if (
-      !validateGeneratedOpenAiData(data, websitePolititianData)
-    ) {
-      throw new Error("Data from OpenAI don't match website data.");
-    }
+    await validateGeneratedOpenAiData(data, websitePolititianData);
 
     return data;
   } catch (error) {
     console.error(
-      `Error processing PDF transaction data: ${error}\nRetrying to process PDF data.`
+      `Error processing PDF transaction data: ${error.message}\nRetrying to process PDF data.`
     );
     const data = await retryProcessPDFData(path);
     return data;
