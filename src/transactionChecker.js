@@ -1,6 +1,7 @@
 import processPDFTransactionData from "./pdf/pdf.js";
 import runScrapper from "./scrapper/scrapper.js";
 import { storeTransactionDataInDatabase } from "./db/db.js";
+import { fetchPolititianTransactions } from "./transactions/transaction.js";
 
 // avoids the need to constantly retrieve data from the server or cache
 let oldPDFUrl = null;
@@ -16,6 +17,8 @@ export default async function checkAndUpdateLatestTransactionData(
   const { pdfUrl: newPDFUrl, websiteTransactionData } = await runScrapper(
     transactionUpdate
   );
+
+
 
   // [NOT IMPLEMENTED] we can check if the polititian is a member of a commitee
   /* const { isMember, commitees } = checkPolititianCommittees(
