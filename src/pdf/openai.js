@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 
 import { assistantInstructions } from "./config.js";
-import { extractStringBetweenBackticks, isJSONString } from "./validation.js";
+import { extractStringBetweenBackticks, isJSON } from "./validation.js";
 
 dotenv.config();
 
@@ -51,26 +51,25 @@ export default async function convertPDFToJSON(filePath) {
 
   // Get the messages from the thread
   let messages = await openai.beta.threads.messages.list(thread.id);
-  
-  // fs.writeFileSync("messages.json", JSON.stringify(messages));
 
   // Get the JSON data from the messages
   let data = await messages.data[0].content[0].text.value;
-
 
   // Delete the file from OpenAI. this should be done asynchronously to save time
   await openai.files.del(file.id);
 
   // Check if the data prompted by openai is in a JSON format
-  if (!(data)) {
+
+  if (!isJSON(data)) {
     try {
       // sometimes the data is wrapped in tripple backticks
       data = extractStringBetweenBackticks(data);
+      data = JSON.parse(data);
     } catch (error) {
       console.error("Error extracting JSON data from OpenAI: ", error);
     }
   }
 
   // Return the JSON data
-  return JSON.parse(data);
+  return data;
 }

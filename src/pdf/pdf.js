@@ -6,20 +6,24 @@ import { validateGeneratedOpenAiData } from "./validation.js";
 // so that can be accessed in the finally block
 let path = null;
 
-export default async function processPDFTransactionData(
-  url,
-  websitePolititianData
-) {
+export default async function processPDFTransactionData(transactionData) {
+  const {
+    _id,
+    name: nameInWebsite,
+    office: officeInWebsite,
+    _filingYear,
+    pdfUrl,
+  } = transactionData;
   try {
     console.log("Downloading and processing PDF data to JSON...");
     // Download the PDF from the given URL, returning the path to the file
-    path = await downloadPDF(url);
+    path = await downloadPDF(pdfUrl);
 
     // Upload the PDF to OpenAI and store the JSON in data
     let data = await convertPDFToJSON(path);
 
     // validate that the data from OpenAI is correct by comparing it to the website data
-    await validateGeneratedOpenAiData(data, websitePolititianData);
+    await validateGeneratedOpenAiData(data, nameInWebsite, officeInWebsite);
 
     return data;
   } catch (error) {

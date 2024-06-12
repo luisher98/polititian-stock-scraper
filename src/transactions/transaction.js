@@ -1,5 +1,10 @@
 import { JSDOM } from "jsdom";
 
+export async function getLatestTransaction(year) {
+  const transactions = await getTransactions(year);
+  return transactions[0];
+}
+
 export async function getTransactions(year) {
   const htmlData = await fetchPolititianTransactions(year);
 
@@ -16,7 +21,6 @@ export async function getTransactions(year) {
       const filingYearElement = row.querySelector(
         'td[data-label="Filing Year"]'
       );
-      const filingElement = row.querySelector('td[data-label="Filing"]');
 
       const id = nameElement
         .getAttribute("href")
@@ -26,18 +30,21 @@ export async function getTransactions(year) {
       const name = nameElement.textContent.trim();
       const office = officeElement.textContent.trim();
       const filingYear = filingYearElement.textContent.trim();
-      const filing = filingElement.textContent.trim();
+      const pdfUrl =
+        "https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/" +
+        year +
+        "/" +
+        nameElement.getAttribute("href").split("/").pop();
       results.push({
         id,
         name,
         office,
         filingYear,
-        filing,
+        pdfUrl,
       });
     });
 
     sortByIdDescending(results);
-
     return results;
   } else {
     console.error("Failed to fetch HTML data");

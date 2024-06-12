@@ -1,19 +1,15 @@
 export async function validateGeneratedOpenAiData(
   data,
-  websiteTransactionData
+  nameInWebsite,
+  officeInWebsite
 ) {
   try {
     const websiteData = {
-      name: websiteTransactionData.nameDisplayedInTransactionWebsite,
-      office: websiteTransactionData.officeDisplayedInTransactionWebsite,
+      nameInWebsite,
+      officeInWebsite,
     };
 
-    const { firstName, office } = await getTransactionFirstNameAndOffice(data);
-
-    const transactionData = {
-      firstName,
-      office,
-    };
+    const transactionData = await getTransactionFirstNameAndOffice(data);
 
     if (!isValidPoliticianData(transactionData, websiteData)) {
       logDiscrepancyError(websiteData, transactionData);
@@ -64,20 +60,31 @@ async function getTransactionFirstNameAndOffice(transactionData) {
   return { firstName, office };
 }
 
-export function isJSONString(obj) {
+export function extractStringBetweenBackticks(text) {
   try {
-    JSON.parse(obj);
-  } catch (e) {
-    return false;
+    const regex = /```(.*?)```/gs;
+    let matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      matches.push(match[1]);
+    }
+    return matches.length ? matches[0] : false;
+  } catch (error) {
+    console.error(
+      "The JSON text could not be extracted from the OpenAI response (string). The response is the following" +
+        text
+    );
   }
 }
 
-export function extractStringBetweenBackticks(text) {
-  const regex = /```(.*?)```/gs;
-  let matches = [];
-  let match;
-  while ((match = regex.exec(text)) !== null) {
-    matches.push(match[1]);
+export function isJSON(obj) {
+  if (typeof text !== "string") {
+    return false;
   }
-  return matches.length ? matches[0] : false;
+  try {
+    JSON.parse(obj);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
