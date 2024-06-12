@@ -1,5 +1,5 @@
 import processPDFTransactionData from "./pdf/pdf.js";
-import runScrapper from "./scrapper/scrapper.js";
+import runScrapper from "./_oldscrapper/scrapper.js";
 import { storeTransactionDataInDatabase } from "./db/db.js";
 import { getLatestTransaction } from "./transactions/transaction.js";
 
