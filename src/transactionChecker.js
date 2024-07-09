@@ -1,5 +1,4 @@
 import processPDFTransactionData from "./pdf/pdf.js";
-import runScrapper from "./_oldscrapper/scrapper.js";
 import { storeTransactionDataInDatabase } from "./db/db.js";
 import { getLatestTransaction } from "./transactions/transaction.js";
 
@@ -14,9 +13,7 @@ export default async function checkAndUpdateLatestTransactionData(
     // if not, retrieve data from server
   }
 
-  // const { pdfUrl: newPDFUrl, websiteTransactionData } = await runScrapper(
-  //   transactionUpdate
-  // );
+
   const currentYear = new Date().getFullYear();
   const latestTransactionData = await getLatestTransaction(currentYear);
   const newPDFUrl = latestTransactionData.pdfUrl
