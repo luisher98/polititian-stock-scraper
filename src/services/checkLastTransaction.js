@@ -1,6 +1,6 @@
-import processPDFTransactionData from "./pdf/pdf.js";
-import { storeTransactionDataInDatabase } from "./db/db.js";
-import { getLatestTransaction } from "./transactions/transaction.js";
+import processPDFTransactionData from "../components/pdfProcessing.js";
+import { storeTransactionDataInDatabase } from "../db/db.js";
+import { getLatestTransaction } from "../utils/transaction.js";
 
 // avoids the need to constantly retrieve data from the server or cache
 let oldPDFUrl = null;
@@ -46,8 +46,8 @@ export default async function checkAndUpdateLatestTransactionData(
       console.log("The transaction data was correctly processed.");
     }
 
-    // Store the information in the database
-    await storeTransactionDataInDatabase(detailedTransactionData);
+    // Store new the information in the database
+    // await storeTransactionDataInDatabase(detailedTransactionData);
 
     transactionUpdate({
       status: "alert",

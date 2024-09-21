@@ -1,7 +1,7 @@
-import { downloadPDF, deletePDF } from "./utils.js";
-import convertPDFToJSON from "./openai.js";
-import { sleep, retryDelays } from "./config.js";
-import { validateGeneratedOpenAiData } from "./validation.js";
+import { downloadPDF, deletePDF } from "../utils/pdf.js";
+import convertPDFToJSON from "../lib/openai.js";
+import { sleep, retryDelays } from "../utils/config.js";
+import { validateGeneratedOpenAiData } from "./dataValidation.js";
 
 // so that can be accessed in the finally block
 let path = null;

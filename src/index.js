@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import checkAndUpdateLatestTransactionData from "./src/transactionChecker.js";
+import checkAndUpdateLatestTransactionData from "./services/checkLastTransaction.js";
 
 dotenv.config();
 
@@ -41,7 +41,7 @@ app.get("/polititians-transaction-data-sse", (req, res) => {
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
-  
+
   try {
     clients.push(res);
 

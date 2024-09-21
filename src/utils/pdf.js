@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 export async function downloadPDF(url) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
   const id = url.split("/").pop().split(".")[0];
-  const outputPath = join(__dirname, "./temp", `${id}.pdf`);
+  const outputPath = join(__dirname, "../temp", `${id}.pdf`);
 
   try {
     const response = await new Promise((resolve, reject) => {
