@@ -17,7 +17,7 @@
   "scripts": {
     "start": "node src/index.js",
     "db": "node ./src/db/db.js",
-    "transactions": "node ./src/transactions/transaction.js"
+    "doc-int": "node ./src/lib/azure/doc-int.js"
   },
   "author": "Luis Hernández Martín",
   "license": "ISC"
