@@ -1,4 +1,4 @@
-# Politician Stock Trading Scrapper
+# Politician Stock Trading Scraper
 
 This project is a web scraper designed to extract stock trading data of politicians. It uses Puppeteer for web scraping, OpenAI for PDF to JSON conversion, and Express for serving the data.
 
